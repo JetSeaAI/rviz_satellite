@@ -68,7 +68,10 @@ install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
 
 # Install demo
 install(FILES demo/demo.launch.xml
+        launch/satellite_view.launch.py
   DESTINATION share/${PROJECT_NAME}/launch)
+install(DIRECTORY rviz2
+  DESTINATION share/${PROJECT_NAME})  
 install(PROGRAMS demo/publish_demo_data
   DESTINATION lib/${PROJECT_NAME})
 
