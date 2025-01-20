@@ -17,7 +17,7 @@ This e.g. implies that only raster tiles (no vector tiles) are supported.
 To try a demo, run the following commands to make Rviz circle around a geo point you define.
 
 ```bash
-ros2 launch rviz_satellite demo.launch.xml
+ros2 launch rviz_satellite satellite_view.launch.py gps_frame:=gps_7
 ```
 
 You should see a view like the following.
@@ -39,9 +39,10 @@ for cases where robots do not have internet access. For example, the file URI
 rviz_satellite doesn't come with any preconfigured tile URL.
 For example, you could use one of the following tile servers:
 
-* OpenStreetMap: https://tile.openstreetmap.org/{z}/{x}/{y}.png
-* TomTom: https://api.tomtom.com/map/1/tile/basic/main/{z}/{x}/{y}.png?tileSize=512&key=[TOKEN]
-* Mapbox: https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=[TOKEN]
+* GoogleMap: <http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga>
+* OpenStreetMap: <https://tile.openstreetmap.org/{z}/{x}/{y}.png>
+* TomTom: <https://api.tomtom.com/map/1/tile/basic/main/{z}/{x}/{y}.png?tileSize=512&key=[TOKEN]>
+* Mapbox: <https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=[TOKEN]>
 
 For some of these, you have to request an access token first.
 Please refer to the respective terms of service and copyrights.
