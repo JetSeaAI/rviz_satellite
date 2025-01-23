@@ -64,7 +64,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /gps_7/navsat
+        Value: /gps_43/navsat
       Value: true
       Zoom: 16
   Enabled: true
