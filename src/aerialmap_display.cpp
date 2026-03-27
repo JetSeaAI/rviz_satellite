@@ -18,6 +18,7 @@ limitations under the License. */
 #include <algorithm>
 #include <utility>
 #include <string>
+#include <atomic>
 
 #include <OgreManualObject.h>
 #include <OgreMaterialManager.h>
@@ -58,6 +59,11 @@ using rviz_common::properties::StatusProperty;
 
 using sensor_msgs::msg::NavSatFix;
 
+namespace
+{
+std::atomic<uint64_t> g_display_instance_counter{0};
+}
+
 // disable cpplint: not using string as const char*
 // declaring as std::string and QString to avoid copies
 const std::string AerialMapDisplay::MAP_FRAME = "map"; // NOLINT
@@ -70,6 +76,9 @@ const QString AerialMapDisplay::TRANSFORM_STATUS = "Transform"; // NOLINT
 AerialMapDisplay::AerialMapDisplay()
 : RosTopicDisplay()
 {
+  const auto instance_number = g_display_instance_counter.fetch_add(1, std::memory_order_relaxed);
+  display_instance_id_ = "AerialMapDisplay/" + std::to_string(instance_number);
+
   alpha_property_ =
     new FloatProperty(
     "Alpha", 0.7, "Amount of transparency to apply to the map.", this,
@@ -347,7 +356,7 @@ void AerialMapDisplay::buildTile(TileCoordinate coordinate, Ogre::Vector2i offse
   // thus, we invert the y translation
   double ty = -offset.data[1] * size - size / 2;
   std::stringstream ss;
-  ss << tile_id;
+  ss << display_instance_id_ << "/" << tile_id;
   auto tile_emplace_result =
     tiles_.emplace(
     std::piecewise_construct,

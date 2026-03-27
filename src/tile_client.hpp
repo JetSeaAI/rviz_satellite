@@ -15,6 +15,7 @@ limitations under the License. */
 
 #include <string>
 #include <map>
+#include <chrono>
 #include <QtNetwork>
 #include "tile.hpp"
 
@@ -47,7 +48,10 @@ class TileClient : public QObject
 
 private:
   QNetworkAccessManager * manager_;
+  std::map<TileId, std::shared_future<QImage>> tile_futures_;
   std::map<TileId, std::promise<QImage>> tile_promises_;
+  std::map<TileId, std::chrono::steady_clock::time_point> tile_request_times_;
+  static constexpr std::chrono::seconds REQUEST_TIMEOUT{30};
 
 public:
   TileClient();
@@ -61,7 +65,7 @@ public:
    * If server url contains "file://", local filesystem will be used.
    *
    */
-  std::future<QImage> request(const TileId & tile_id);
+  std::shared_future<QImage> request(const TileId & tile_id);
 
   /**
    * @brief Load a specific tile from filesystem
@@ -75,7 +79,7 @@ public:
    * Since QNetworkDiskCache is used, tiles will be loaded from the file system if they have been cached. Otherwise they
    * get downloaded.
    */
-  std::future<QImage> request_remote(const TileId & tile_id);
+  std::shared_future<QImage> request_remote(const TileId & tile_id);
 
 private Q_SLOTS:
   void request_finished(QNetworkReply * reply);

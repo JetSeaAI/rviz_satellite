@@ -93,11 +93,13 @@ protected:
   std::mutex tiles_mutex_;
   TileClient tile_client_;
 
-  std::map<TileId, std::future<QImage>> pending_tiles_;
+  std::map<TileId, std::shared_future<QImage>> pending_tiles_;
   std::map<TileId, TileObject> tiles_;
 
   sensor_msgs::msg::NavSatFix::ConstSharedPtr last_fix_;
   bool tile_server_had_errors_ {false};
+
+  std::string display_instance_id_;
 
   static const std::string MAP_FRAME;
   static const QString MESSAGE_STATUS;
